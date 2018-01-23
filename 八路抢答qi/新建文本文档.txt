@@ -1,0 +1,258 @@
+#include<AT89X51.H>
+unsigned char code temp[]={0xc0,0xcf,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90};
+unsigned char time=30;
+unsigned char o,p;
+unsigned char counter;
+unsigned char con;
+unsigned char tpp;
+unsigned char gd;
+unsigned char qm;
+unsigned char hm;
+unsigned char he;
+void delay()
+{ 
+unsigned char i,j,k;
+for(k=100;k>0;k--)
+for(i=20;i>0;i--)
+for(j=248;j>0;j--);
+}
+
+
+void delay1()
+{ 
+unsigned char i,j,k;
+for(k=1;k>0;k--)
+for(i=20;i>0;i--)
+for(j=248;j>0;j--);
+}
+
+
+void delay2()
+{ 
+unsigned char i,j,k;
+for(k=40;k>0;k--)
+for(i=20;i>0;i--)
+for(j=248;j>0;j--);
+}
+
+
+
+void main()
+{
+    if(P1_0==0)
+	{
+	
+		 while(1)
+		   {
+
+		   o=time/10;
+		   p=time%10;
+		   P2=0x04;
+		   P0=temp[o];
+		   delay1();
+		   P2=0x08;
+		   P0=temp[p];
+		   delay1();
+		   P2=0x00;
+		   P0=0xff;
+		   time--;
+		   delay();
+
+		   	
+           if(P3==0xfe)
+			{counter=1;
+	
+			break;}
+ 		    if(P3==0xfd)
+            {counter=2;
+		
+		   break;}
+		      if(P3==0xfb)
+            {counter=3;
+			
+		   break;} 
+		       if(P3==0xf7)
+            {counter=4;
+		
+		   break;}
+		       if(P3==0xef)
+            {counter=5;
+			
+		   break;}
+		       if(P3==0xdf)
+            {counter=6;
+		
+		   break;}
+		       if(P3==0xbf)
+            {counter=7;
+		
+		   break;}
+		       if(P3==0x7f)
+            {counter=8;
+			
+		   break;}
+
+		   if(time==0)
+		  P1_3=0;
+
+		}
+		 while(1)
+		 {
+		   P2=0x04;
+		   P0=temp[o];
+		   delay1();
+		   P2=0x08;
+		   P0=temp[p];
+		   delay1();
+		   P2=0x01;
+		   P0=temp[counter];
+		    delay1();
+			if(P1_1==0)
+		{
+	con=con+1;;
+		break;  }
+		 }
+
+		 P2=0x00;
+		   P0=0xff;
+
+
+
+		while(1)
+		 { if(P3==0xfe&&tpp==0)
+			{ delay2();
+			counter=1;
+			 tpp=tpp+1;}
+           if(P3==0xfe&&tpp==1)
+			{  delay2();
+			gd=1;
+			 tpp=tpp+1;}			
+
+		
+ 		    if(P3==0xfd&&tpp==0)
+            {	delay2();
+			counter=2;
+			 tpp=tpp+1;
+		   }
+			   if(P3==0xfd&&tpp==1)
+            {delay2();
+			gd=2;
+			 tpp=tpp+1;
+		   }
+
+
+		      if(P3==0xfb&&tpp==0)
+            {delay2();
+			counter=3;
+			 tpp=tpp+1;
+		  } 
+                if(P3==0xfb&&tpp==1)
+            {delay2();
+			gd=3;
+			 tpp=tpp+1;
+		  } 
+
+
+		       if(P3==0xf7&&tpp==0)
+            {delay2();
+			counter=4;
+			  tpp=tpp+1;
+		   }
+			     if(P3==0xf7&&tpp==1)
+            {delay2();
+			gd=4;
+			  tpp=tpp+1;
+		   }
+
+
+		       if(P3==0xef&&tpp==0)
+            {delay2();
+			counter=5;
+			  tpp=tpp+1;
+		  }
+			   if(P3==0xef&&tpp==1)
+            {delay2();
+			gd=5;
+			  tpp=tpp+1;
+		  }
+
+		       if(P3==0xdf&&tpp==0)
+            {delay2();
+			counter=6;
+			  tpp=tpp+1;
+		   }
+			   if(P3==0xdf&&tpp==1)
+            { delay2();
+			gd=6;
+			  tpp=tpp+1;
+		   }
+
+
+		       if(P3==0xbf&&tpp==0)
+            {  delay2();
+			counter=7;
+			   tpp=tpp+1;
+		   }
+
+			   if(P3==0xbf&&tpp==1)
+            {delay2();
+			gd=7;
+			   tpp=tpp+1;
+		   }
+
+		       if(P3==0x7f&&tpp==0)
+            {delay2();
+			counter=8;
+			  tpp=tpp+1;
+		   }
+		      if(P3==0x7f&&tpp==1)
+            {delay2();
+			gd=8;
+			  tpp=tpp+1;
+		   }
+		   if(tpp==2)
+		   break;
+
+		  }
+
+		 while(1)
+		   {P2=0x04;
+		   P0=temp[counter];
+		   delay1();
+		   P2=0x08;
+		   P0=temp[gd];
+		   delay1(); 
+		   	if(P1_2==0)
+		   	break;
+		   }
+			 he=(counter*10)+gd;
+		   	 while(1)
+		   {
+
+		   qm=he/10;
+		   hm=he%10;
+		   P2=0x04;
+		   P0=temp[qm];
+		   delay1();
+		   P2=0x08;
+		   P0=temp[hm];
+		   delay1();
+		   P2=0x00;
+		   P0=0xff;
+		   he--;
+		   delay();
+		    if(he==0)
+		 { P1_3=0;
+		    P2=0x00;
+		   P0=0xff;
+		   break;
+		 }
+		  }
+
+	}
+	if(P1_0!=0)
+	{	  if(P3!=0xff)
+	   	{if(con==0)
+		  P1_3=0;}
+	}
+}
